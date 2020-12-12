@@ -9,6 +9,7 @@ import (
 
 // Job 延时任务回调函数
 type Job func(interface{})
+
 // TaskData 回调函数参数类型
 
 // TimeWheel 时间轮
@@ -31,7 +32,7 @@ type Task struct {
 	delay  time.Duration // 延迟时间
 	circle int           // 时间轮需要转动几圈
 	key    interface{}   // 定时器唯一标识, 用于删除定时器
-	data   interface{}      // 回调函数参数
+	data   interface{}   // 回调函数参数
 }
 
 // New 创建时间轮
@@ -150,8 +151,8 @@ func (tw *TimeWheel) addTask(task *Task) {
 
 // 获取定时器在槽中的位置, 时间轮需要转动的圈数
 func (tw *TimeWheel) getPositionAndCircle(d time.Duration) (pos int, circle int) {
-	delaySeconds := int(d.Seconds())
-	intervalSeconds := int(tw.interval.Seconds())
+	delaySeconds := int(d.Milliseconds())
+	intervalSeconds := int(tw.interval.Milliseconds())
 	circle = int(delaySeconds / intervalSeconds / tw.slotNum)
 	pos = int(tw.currentPos+delaySeconds/intervalSeconds) % tw.slotNum
 
